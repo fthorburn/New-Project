@@ -1,0 +1,75 @@
+---
+title: "Wage quotes"
+author: "Foster Thorburn"
+date: "2023-02-06"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, warning = FALSE}
+library(dplyr)
+library(pander)
+library(gt)
+```
+
+Download CSV file for Report of Signatures
+```{r}
+
+setwd("C:/Users/foste/Desktop/YDSA/R studio")
+
+signature_data <- read.csv("C:/Users/foste/Desktop/YDSA/R studio/Copy of Petition_report_391631_20230206_1816 - Petition_report_391631_20230206_1816.csv")
+
+```
+
+Filtering Data Frame for Duplicates
+#NEED TO FIGURE OUT IF THIS REDUCED TOTAL IS CORRECT, email DeLernia
+```{r}
+
+signature_data_NonDuplicate <- signature_data %>%
+  distinct(Email, .keep_all = TRUE)
+
+```
+
+Printing Non-Duplicate Names
+```{r}
+
+print_namelist <- select(signature_data_NonDuplicate, First.name, Last.name, Email)
+
+#Code to put "Entered Email, Not Name" for entries without a first name
+v <- ifelse(print_namelist$First.name == "","Entered Email, Not Name", print_namelist$First.name)
+print_namelist$First.name <- v
+
+#print(print_namelist, right = FALSE)
+print_namelist %>% gt() %>% 
+  tab_header(
+    title = "Signature List"
+  )
+
+```
+
+
+Filtering Data Frame for Comments
+```{r}
+
+# filter data-frame by rows that do not have nothing ("") in the Comments variable
+quote_list_names = filter(signature_data_NonDuplicate, Comments != "")
+
+quote_list <- select(quote_list_names, Comments)
+
+```
+
+Print Quotes
+```{r}
+
+#Knit to html for list of quotes readable in a single page
+print(quote_list$Comments, right = FALSE)
+
+```
+
+
+
