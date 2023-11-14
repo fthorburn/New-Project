@@ -27,7 +27,6 @@ signature_data <- read.csv("C:/Users/foste/Desktop/YDSA/R studio/Copy of Petitio
 ```
 
 Filtering Data Frame for Duplicates
-#NEED TO FIGURE OUT IF THIS REDUCED TOTAL IS CORRECT, email DeLernia
 ```{r}
 
 signature_data_NonDuplicate <- signature_data %>%
